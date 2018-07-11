@@ -22,6 +22,10 @@ public class Data {
         this.initialized = false;
     }
 
+    public List<Meal> getAllMeals(Canteen canteen){
+        return this.parser.getAllMeals(canteen);
+    }
+
     public Set<Canteen> getCanteenByCity(String city){
         if(!this.initialized){
             throw new RuntimeException("You have to initialize Data first, before calling any other methods!");
@@ -127,7 +131,7 @@ public class Data {
         this.initialized = true;
     }
 
-    public void updateCanteens(){
+    private void updateCanteens(){
         this.pageCount = parser.getPageCount();
         this.canteenCount = parser.getNumberOfCanteens();
         this.parser.setUrl(this.parser.getUrl() + "/?page=X");

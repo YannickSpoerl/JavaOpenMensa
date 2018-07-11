@@ -2,13 +2,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Parser {
 
@@ -114,5 +112,43 @@ public class Parser {
             allCanteens.add(new Canteen(id,name, city, address,latitude,longitude));
         }
         return allCanteens;
+    }
+
+    public List<Meal> getAllMeals(Canteen canteen){
+        URL formerUrl = this.url;
+        this.setUrl(this.url.toString() + "/" + canteen.getId() + "/meals");
+        JSONArray o = (JSONArray) parseJSON();
+        List<Meal> allMealsAllDays = new ArrayList<>();
+        for(Object day : o){
+            JSONObject dayJSON = (JSONObject) day;
+            if(!(boolean) dayJSON.get("closed")){
+                List<Meal> allMeals = new ArrayList<>();
+                String date = (String) dayJSON.get("date");
+                JSONArray meals = (JSONArray) dayJSON.get("meals");
+                for(Object m : meals){
+                    JSONObject mealJSON = (JSONObject) m;
+                    long id = (long) mealJSON.get("id");
+                    String name = (String) mealJSON.get("name");
+                    String category = (String) mealJSON.get("category");
+                    Map<String, Double> prices = new HashMap<>();
+                    JSONObject pricesJSON = (JSONObject) mealJSON.get("prices");
+                    prices.put("students", (Double) (pricesJSON.get("students")));
+                    prices.put("employees", (Double) (pricesJSON).get("employees"));
+                    prices.put("pupils", (Double) (pricesJSON).get("pupils"));
+                    prices.put("others", (Double) (pricesJSON).get("others"));
+                    List<String> notes = new ArrayList<>();
+                    JSONArray notesJSON = (JSONArray) mealJSON.get("notes");
+                    for(Object note : notesJSON){
+                        notes.add((String) note);
+                    }
+                    Meal newMeal = new Meal(date, id, name, category, prices, notes);
+                    allMeals.add(newMeal);
+                    canteen.addMeal(newMeal);
+                }
+                allMealsAllDays.addAll(allMeals);
+            }
+        }
+        this.setUrl(formerUrl.toString());
+        return allMealsAllDays;
     }
 }
