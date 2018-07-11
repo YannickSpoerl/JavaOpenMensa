@@ -3,21 +3,25 @@ import java.util.List;
 
 public class Canteen {
 
-    private int id;
+    private long id;
     private String name;
     private String city;
-    private String adress;
+    private String address;
     private double latitude;
     private double longitude;
     private List<Meal> meals;
 
-    public Canteen(int id, String name, String city, String adress, double latitude, double longitude){
+    public Canteen(long id, String name, String city, String address, double latitude, double longitude){
         this.id = id;
         this.name = name;
         this.city = city;
-        this.adress = adress;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public String toString(){
+        return this.id + ": " + this.name + "\n" + this.city + ", " + this.address + "\n" + "lat: " + this.latitude + " long: " + this.longitude;
     }
 
     public void addMeal(Meal m){
@@ -34,7 +38,7 @@ public class Canteen {
         return meals;
     }
 
-    public int getId() {
+    public long getId() {
 
         return id;
     }
@@ -47,8 +51,8 @@ public class Canteen {
         return city;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public double getLatitude() {

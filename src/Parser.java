@@ -6,17 +6,40 @@ import org.json.simple.parser.ParseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Parser {
 
-    private String parseToString(String u){
+    private URL url;
+
+    public Parser(String url) {
         try {
-            URL url = new URL(u);
-            URLConnection connection = url.openConnection();
+            this.url = new URL(url);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void setUrl(String url){
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public URL getUrl(){
+        return this.url;
+    }
+
+    private String parseToString(){
+        try {
+            URLConnection connection = this.url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             StringBuilder stringBuilder = new StringBuilder();
@@ -31,8 +54,8 @@ public class Parser {
         throw new NullPointerException();
     }
 
-    private Object parseJSON(String url){
-        String s = parseToString(url);
+    private Object parseJSON(){
+        String s = parseToString();
         JSONParser p = new JSONParser();
         try {
             return p.parse(s);
@@ -42,13 +65,45 @@ public class Parser {
         return null;
     }
 
-    public List<Canteen> getAllCanteens(String url){
+    public int getPageCount(){
+        try{
+            URLConnection connection = this.url.openConnection();
+            return Integer.parseInt(connection.getHeaderField("X-Total-Pages"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getNumberOfCanteens(){
+        try{
+            URLConnection connection = this.url.openConnection();
+            return Integer.parseInt(connection.getHeaderField("X-Total-Count"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Canteen> getAllCanteens(){
         List<Canteen> allCanteens = new ArrayList<>();
-        JSONArray o = (JSONArray) parseJSON(url);
+        JSONArray o = (JSONArray) parseJSON();
         for(Object canteen : o){
             JSONObject newCanteen = (JSONObject) canteen;
-            System.out.println(newCanteen.get("name"));
+            long id = (long) newCanteen.get("id");
+            String name = (String) newCanteen.get("name");
+            String city = (String) newCanteen.get("city");
+            String address = (String) newCanteen.get("address");
+            double latitude = 0;
+            double longitude = 0;
+            try{
+                 latitude = (double) ((JSONArray) newCanteen.get("coordinates")).get(0);
+                 longitude = (double) ((JSONArray) newCanteen.get("coordinates")).get(1);
+            } catch (NullPointerException e){
+                System.out.println(name + " coordinates were set to 0, because no coordinates were given.");
+            }
+            allCanteens.add(new Canteen(id,name, city, address,latitude,longitude));
         }
-        return null;
+        return allCanteens;
     }
 }
