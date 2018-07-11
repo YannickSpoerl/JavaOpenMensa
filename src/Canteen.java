@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Canteen {
+public class Canteen implements Serializable {
 
     private long id;
     private String name;
@@ -21,7 +22,7 @@ public class Canteen {
     }
 
     public String toString(){
-        return this.id + ": " + this.name + "\n" + this.city + ", " + this.address + "\n" + "lat: " + this.latitude + " long: " + this.longitude;
+        return this.name;
     }
 
     public void addMeal(Meal m){

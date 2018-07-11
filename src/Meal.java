@@ -3,6 +3,7 @@ import java.util.Map;
 
 public class Meal {
 
+    private String date;
     private int id;
     private String name;
     private String category;
