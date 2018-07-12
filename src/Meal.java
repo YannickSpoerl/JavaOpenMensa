@@ -20,7 +20,7 @@ public class Meal {
     }
 
     public String toString(){
-        return this.date + ": " + this.name;
+        return this.name;
     }
 
     public long getId() {

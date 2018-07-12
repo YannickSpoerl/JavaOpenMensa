@@ -143,7 +143,6 @@ public class Parser {
                     }
                     Meal newMeal = new Meal(date, id, name, category, prices, notes);
                     allMeals.add(newMeal);
-                    canteen.addMeal(newMeal);
                 }
                 allMealsAllDays.addAll(allMeals);
             }

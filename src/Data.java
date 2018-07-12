@@ -22,8 +22,9 @@ public class Data {
         this.initialized = false;
     }
 
-    public List<Meal> getAllMeals(Canteen canteen){
-        return this.parser.getAllMeals(canteen);
+    public void initializeMeals(Canteen canteen){
+        this.out.println("Initializing Meals of " + canteen.getName() + "...");
+        canteen.setMeals(parser.getAllMeals(canteen));
     }
 
     public Set<Canteen> getCanteenByCity(String city){
@@ -118,15 +119,15 @@ public class Data {
         this.out.println("Initializing all canteens ...");
         File f = new File("allCanteens.txt");
         if(!f.exists()) {
+            this.out.println("Fetching canteens from online...");
             updateCanteens();
             writeCanteensToFile();
-            this.out.println("Fetched canteens from online...");
             this.out.println("Initialized all canteens!");
             this.initialized = true;
             return;
         }
+        this.out.println("Fetching canteens from local file");
         this.allCanteens = readCanteensFromFile();
-        this.out.println("Fetched canteens from local file");
         this.out.println("Initialized all canteens!");
         this.initialized = true;
     }
@@ -134,6 +135,7 @@ public class Data {
     private void updateCanteens(){
         this.pageCount = parser.getPageCount();
         this.canteenCount = parser.getNumberOfCanteens();
+        String formerURL = this.parser.getUrl().toString();
         this.parser.setUrl(this.parser.getUrl() + "/?page=X");
         for(int i = 1; i <= pageCount; i++){
             String url = this.parser.getUrl().toString();
@@ -142,6 +144,7 @@ public class Data {
             this.parser.setUrl(url);
             this.allCanteens.addAll(this.parser.getAllCanteens());
         }
+        this.parser.setUrl(formerURL);
     }
 
     private Set<Canteen> readCanteensFromFile(){
