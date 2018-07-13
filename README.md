@@ -37,7 +37,8 @@ Once the meals of the canteen are initialized you can access them with following
 * `canteen.getMealsByCategory(String category)` returns a Set of meals matching the given category </br>
 * `canteen.getMealsByNote(String note)` or </br>
 * `canteen.getMealsByNote(Set<String> notes)` returns a List of meals matching the given note(s) </br>
-Note that calling any of those methods will result in an Exception if you haven't initialized the canteens meals! </br></br>
+Note that calling any of those methods will result in an Exception if you haven't initialized the canteens meals!
+
 **General**</br>
 Canteen and Meal both contains several Getters and a toString()- method. </br>
 If any object or data shouldn't it will be `null`. </br>
