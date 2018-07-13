@@ -1,3 +1,4 @@
+
 public class Main {
 
     public static void main(String[] args){
@@ -5,7 +6,7 @@ public class Main {
         Data data = new Data(parser, System.out);
         data.initialize();
         Canteen alteMensa = data.getCanteenByID(79);
-        alteMensa.initializeMeals(data);
-        System.out.println(alteMensa.getMealsToday());
+        data.initializeMeals(alteMensa);
+        System.out.println(alteMensa.getMealsToday().get(0).getDetais());
     }
 }

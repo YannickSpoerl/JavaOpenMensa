@@ -23,6 +23,18 @@ public class Meal {
         return this.name;
     }
 
+    public String getDetais(){
+        String details = this.name + " " + "(" + this.id + ")\n" + this.category + ", " + this.date + "\nprices: \n";
+        for(String key : prices.keySet()){
+            details += "   " + key + ": " + prices.get(key) + "\n";
+        }
+        details += "notes: \n";
+        for(String note : this.notes){
+            details += "   " + note + "\n";
+        }
+        return details;
+    }
+
     public long getId() {
         return id;
     }
@@ -45,5 +57,21 @@ public class Meal {
 
     public String getDate() {
         return date;
+    }
+
+    public double getPupilPrice(){
+        return this.prices.get("pupil");
+    }
+
+    public double getStudentPrice(){
+        return this.prices.get("students");
+    }
+
+    public double getEmployeePrice(){
+        return this.prices.get("employees");
+    }
+
+    public double getOtherPrice(){
+        return this.prices.get("others");
     }
 }

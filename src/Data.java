@@ -25,6 +25,7 @@ public class Data {
     public void initializeMeals(Canteen canteen){
         this.out.println("Initializing Meals of " + canteen.getName() + "...");
         canteen.setMeals(parser.getAllMeals(canteen));
+        this.out.println("Initialized Meals of " + canteen.getName() + "!");
     }
 
     public Set<Canteen> getCanteenByCity(String city){
@@ -116,7 +117,7 @@ public class Data {
     }
 
     public void initialize(){
-        this.out.println("Initializing all canteens ...");
+        this.out.println("Initializing all canteens...");
         File f = new File("allCanteens.txt");
         if(!f.exists()) {
             this.out.println("Fetching canteens from online...");
@@ -126,7 +127,7 @@ public class Data {
             this.initialized = true;
             return;
         }
-        this.out.println("Fetching canteens from local file");
+        this.out.println("Fetching canteens from local file...");
         this.allCanteens = readCanteensFromFile();
         this.out.println("Initialized all canteens!");
         this.initialized = true;

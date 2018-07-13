@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,6 +27,66 @@ public class Canteen implements Serializable {
 
     public String toString(){
         return this.name;
+    }
+
+    public List<Meal> getMealByNote(Set<String> notes){
+        if(notes == null){
+            throw new NullPointerException();
+        }
+        if(!initializedMeals){
+            throw new RuntimeException("You should initialize the meals before accessing them!");
+        }
+        List<Meal> mealsWithNote = new ArrayList<>();
+        for(Meal m : this.meals){
+            for(String mealNote : m.getNotes()){
+                for(String note : notes){
+                    if(mealNote.contains(note)){
+                        mealsWithNote.add(m);
+                    }
+                }
+            }
+        }
+        return mealsWithNote;
+    }
+
+    public List<Meal> getMealByNote(String note){
+        if(note == null){
+            throw new NullPointerException();
+        }
+        if(note.equals("")){
+            throw new IllegalArgumentException();
+        }
+        if(!initializedMeals){
+            throw new RuntimeException("You should initialize the meals before accessing them!");
+        }
+        List<Meal> mealsWithNote = new ArrayList<>();
+        for(Meal m : this.meals){
+            for(String n : m.getNotes()){
+                if(n.contains(note)){
+                    mealsWithNote.add(m);
+                }
+            }
+        }
+        return mealsWithNote;
+    }
+
+    public Set<Meal> getMealsByCategory(String category){
+        if(category == null){
+            throw new NullPointerException();
+        }
+        if(category.equals("")){
+            throw new IllegalArgumentException();
+        }
+        if(!initializedMeals){
+            throw new RuntimeException("You should initialize the meals before accessing them!");
+        }
+        Set<Meal> mealsCategory = new HashSet<>();
+        for(Meal m : this.meals){
+            if(m.getCategory().contains(category)){
+                mealsCategory.add(m);
+            }
+        }
+        return mealsCategory;
     }
 
     public Meal getMealById(long id){
@@ -77,6 +138,25 @@ public class Canteen implements Serializable {
         }
         return todaysMeals;
     }
+
+    public List<Meal> getMealsByDate(Date date){
+        String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        if(date == null){
+            throw new NullPointerException();
+        }
+
+        if(!initializedMeals){
+            throw new RuntimeException("You should initialize the meals before accessing them!");
+        }
+        List<Meal> datesMeals = new ArrayList<>();
+        for(Meal m : this.meals){
+            if(m.getDate().equals(dateString)){
+                datesMeals.add(m);
+            }
+        }
+        return datesMeals;
+    }
+
 
     public List<Meal> getMealsByDate(Set<String> dates){
         if(dates == null){
