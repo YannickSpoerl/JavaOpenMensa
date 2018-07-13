@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Canteen implements Serializable {
 
+    static final long serialVersionUID = 79L;
     private long id;
     private String name;
     private String city;
@@ -70,7 +71,7 @@ public class Canteen implements Serializable {
         return mealsWithNote;
     }
 
-    public Set<Meal> getMealsByCategory(String category){
+    public List<Meal> getMealsByCategory(String category){
         if(category == null){
             throw new NullPointerException();
         }
@@ -80,7 +81,7 @@ public class Canteen implements Serializable {
         if(!initializedMeals){
             throw new RuntimeException("You should initialize the meals before accessing them!");
         }
-        Set<Meal> mealsCategory = new HashSet<>();
+        List<Meal> mealsCategory = new ArrayList<>();
         for(Meal m : this.meals){
             if(m.getCategory().contains(category)){
                 mealsCategory.add(m);

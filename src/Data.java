@@ -118,7 +118,7 @@ public class Data {
 
     public void initialize(){
         this.out.println("Initializing all canteens...");
-        File f = new File("allCanteens.txt");
+        File f = new File("allCanteens.tmp");
         if(!f.exists()) {
             this.out.println("Fetching canteens from online...");
             updateCanteens();
@@ -150,7 +150,7 @@ public class Data {
 
     private Set<Canteen> readCanteensFromFile(){
         try{
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("allCanteens.txt"));
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("allCanteens.tmp"));
             Set<Canteen> canteens = (Set<Canteen>) objectInputStream.readObject();
             objectInputStream.close();
             return canteens;
@@ -162,7 +162,7 @@ public class Data {
 
     private void writeCanteensToFile(){
         try{
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("allCanteens.txt"));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("allCanteens.tmp"));
             objectOutputStream.writeObject(this.allCanteens);
             objectOutputStream.close();
         } catch (IOException e){
